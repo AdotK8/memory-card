@@ -7,6 +7,8 @@ export default function App() {
   const [pokemons, setPokemons] = useState([]);
   const [round, setRound] = useState(0);
   const [randomisedPokemon, setRandomisedPokemon] = useState([]);
+  const displayPokemon =
+    randomisedPokemon.length > 0 ? randomisedPokemon : pokemons;
 
   const fetchPokemons = async (pokemonIds) => {
     const newPokemons = [];
@@ -21,6 +23,7 @@ export default function App() {
           name: data.name,
           imageUrl: data.sprites.other.dream_world.front_default,
           number: id,
+          clicked: false,
         });
       } catch (error) {
         console.error("Error fetching Pokémon:", error);
@@ -41,6 +44,24 @@ export default function App() {
     setRound((prevRound) => prevRound + 1);
   };
 
+  const handlePokemonClick = (id) => {
+    console.log(id);
+    setPokemons((prevPokemons) => {
+      return prevPokemons.map((pokemon) => {
+        if (pokemon.id === id) {
+          return {
+            ...pokemon,
+            clicked: true,
+          };
+        } else return pokemon;
+      });
+    });
+  };
+
+  const handleShowPokemonsCLick = () => {
+    console.log(pokemons);
+  };
+
   // On the first render, fetch 6 pokemons
   useEffect(() => {
     if (round === 0) {
@@ -57,13 +78,17 @@ export default function App() {
       const shuffled = randomiseOrder(pokemons);
       setRandomisedPokemon(shuffled);
     }
-  }, [pokemons]);
+  }, [round]);
 
   return (
     <div>
+      <button onClick={handleShowPokemonsCLick}>Show Pokemons</button>
       <button onClick={handleAddClick}>Add Pokémon</button>
-      {randomisedPokemon.map((pokemon) => (
+      {displayPokemon.map((pokemon) => (
         <div key={pokemon.id}>
+          <button onClick={() => handlePokemonClick(pokemon.id)}>
+            click {pokemon.name}
+          </button>
           <img src={pokemon.imageUrl} alt={pokemon.name} />
           <p>{pokemon.name}</p>
         </div>

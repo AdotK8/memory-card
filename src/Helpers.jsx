@@ -21,12 +21,11 @@ export function randomiseOrder(arr) {
   let i = shuffledArray.length - 1;
   let j, temp;
 
-  while (i > 0) {
+  while (--i > 0) {
     j = Math.floor(Math.random() * (i + 1));
     temp = shuffledArray[j];
     shuffledArray[j] = shuffledArray[i];
     shuffledArray[i] = temp;
-    i--;
   }
 
   return shuffledArray;
