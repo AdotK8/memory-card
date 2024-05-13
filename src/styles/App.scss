@@ -19,6 +19,7 @@ body,
 }
 
 .main {
+  position: relative;
   background-image: url("../assets/images/background2.jpg");
   background-size: cover;
   background-position: center;
@@ -28,6 +29,7 @@ body,
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 10px;
 
   #pokeball {
     margin-right: 5px;
@@ -48,7 +50,7 @@ body,
 }
 
 .start-screen {
-  position: fixed; /* Ensures the modal stays centered even when scrolling */
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -56,13 +58,27 @@ body,
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2; /* Ensures the start-screen is above the overlay */
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1; /* Lower z-index */
+  }
 
   .modal {
     @extend .vt323-regular;
+    position: relative;
+    z-index: 3; /* Ensure the modal appears above the overlay */
     width: 600px;
     display: flex;
     flex-direction: column;
-    background-color: #f8f3f876;
+    background-color: rgba(255, 255, 255, 0.715);
     padding: 10px;
     color: #181010;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
