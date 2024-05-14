@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import Start from "./Start";
 import "./styles/App.scss";
+import App from "./Pokemon";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <section className="main">
@@ -12,6 +13,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <span>Memo</span>
       </div>
     </div>
-    <Start />
+    <App />
   </section>
 );

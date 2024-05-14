@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import App from "./Pokemon";
 import "./styles/App.scss";
 
 export default function Start() {
@@ -10,7 +11,7 @@ export default function Start() {
 
   return (
     <>
-      {modal && (
+      {modal ? (
         <div className="start-screen">
           <div className="modal">
             <h2>Welcome to the PokéMemo</h2>
@@ -25,6 +26,8 @@ export default function Start() {
             </button>
           </div>
         </div>
+      ) : (
+        <App />
       )}
     </>
   );

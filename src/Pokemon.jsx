@@ -7,6 +7,8 @@ export default function App() {
   const [pokemons, setPokemons] = useState([]);
   const [round, setRound] = useState(0);
   const [randomisedPokemon, setRandomisedPokemon] = useState([]);
+  const [currentScore, setCurrentScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
   const displayPokemon =
     randomisedPokemon.length > 0 ? randomisedPokemon : pokemons;
 
@@ -81,18 +83,25 @@ export default function App() {
   }, [round]);
 
   return (
-    <div>
-      <button onClick={handleShowPokemonsCLick}>Show Pokemons</button>
-      <button onClick={handleAddClick}>Add Pokémon</button>
-      {displayPokemon.map((pokemon) => (
-        <div key={pokemon.id}>
-          <button onClick={() => handlePokemonClick(pokemon.id)}>
-            click {pokemon.name}
-          </button>
-          <img src={pokemon.imageUrl} alt={pokemon.name} />
-          <p>{pokemon.name}</p>
-        </div>
-      ))}
-    </div>
+    <>
+      <div className="scores">
+        <div className="curent-score">SCORE:{currentScore}</div>
+        <div className="curent-score">HIGH SCORE:{currentScore}</div>
+        <img src="./src/assets/images/trophy.png" alt="Image" id="trophy" />
+      </div>
+      {/* <div className="card-section">
+        <button onClick={handleShowPokemonsCLick}>Show Pokemons</button>
+        <button onClick={handleAddClick}>Add Pokémon</button>
+        {displayPokemon.map((pokemon) => (
+          <div key={pokemon.id}>
+            <button onClick={() => handlePokemonClick(pokemon.id)}>
+              click {pokemon.name}
+            </button>
+            <img src={pokemon.imageUrl} alt={pokemon.name} />
+            <p>{pokemon.name}</p>
+          </div>
+        ))}
+      </div> */}
+    </>
   );
 }

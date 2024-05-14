@@ -115,3 +115,19 @@ body,
     }
   }
 }
+
+.scores {
+  @extend .vt323-regular;
+  margin-left: 15px;
+  font-size: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+
+  #trophy {
+    height: 30px;
+    width: auto;
+    margin-left: -15px;
+  }
+}
