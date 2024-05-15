@@ -4,7 +4,7 @@
 export function getRandomPokemonIds(existingIds = [], count) {
   const uniqueNumbers = new Set(existingIds);
   while (uniqueNumbers.size < count + existingIds.length) {
-    const randomNum = Math.floor(Math.random() * 100) + 1;
+    const randomNum = Math.floor(Math.random() * 151) + 1;
     uniqueNumbers.add(randomNum);
   }
   //create array of new pokemons

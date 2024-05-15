@@ -13,6 +13,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <span>Memo</span>
       </div>
     </div>
-    <App />
+    <Start />
   </section>
 );
