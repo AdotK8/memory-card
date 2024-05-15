@@ -18,14 +18,16 @@ export function getRandomPokemonIds(existingIds = [], count) {
 //Using Fisher-Yates shuffle
 export function randomiseOrder(arr) {
   const shuffledArray = [...arr];
-  let i = shuffledArray.length - 1;
+  let i = shuffledArray.length - 1; // Start from the last index
   let j, temp;
 
-  while (--i > 0) {
+  while (i > 0) {
+    // Corrected loop condition
     j = Math.floor(Math.random() * (i + 1));
     temp = shuffledArray[j];
     shuffledArray[j] = shuffledArray[i];
     shuffledArray[i] = temp;
+    i--;
   }
 
   return shuffledArray;

@@ -9,7 +9,7 @@ export default function App() {
   const [randomisedPokemon, setRandomisedPokemon] = useState([]);
   const [currentScore, setCurrentScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
-  const [currentRound, setCurrentRound] = useState([0, 5]);
+  const [currentRoundScore, setCurrentRoundScore] = useState([0, 5]);
   const displayPokemon =
     randomisedPokemon.length > 0 ? randomisedPokemon : pokemons;
 
@@ -20,7 +20,6 @@ export default function App() {
         const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
         const response = await fetch(url);
         const data = await response.json();
-        console.log(data);
 
         newPokemons.push({
           id: uuidv4(), // Unique ID for internal use
@@ -36,37 +35,56 @@ export default function App() {
     return newPokemons;
   };
 
-  const handleAddClick = async () => {
-    // Generate two new pokemon IDs
-    const newPokemonIds = getRandomPokemonIds(
-      pokemons.map((p) => p.number),
-      2
-    );
+  const handleNextRoundClick = async () => {
+    //function to start new round
+    console.log("new round should start");
+    //get new pokemons for next round
+    const newPokemonIds = getRandomPokemonIds([], currentRoundScore[1] + 2);
+    console.log(newPokemonIds);
     const newPokemons = await fetchPokemons(newPokemonIds);
+    setPokemons(newPokemons);
 
-    setPokemons((prevPokemons) => [...prevPokemons, ...newPokemons]);
+    //set round to trigger render
     setRound((prevRound) => prevRound + 1);
+
+    //set currentScore
+    setCurrentRoundScore([0, currentRoundScore[0] + 2]);
   };
 
   const handlePokemonClick = (id) => {
-    console.log(id);
     setPokemons((prevPokemons) => {
       return prevPokemons.map((pokemon) => {
         if (pokemon.id === id) {
-          return {
-            ...pokemon,
-            clicked: true,
-          };
-        } else return pokemon;
+          if (pokemon.clicked) {
+            console.error(`${pokemon.name} has already been clicked!`);
+          } else {
+            // Set clicked to true for the clicked Pokémon and update score states
+            setCurrentRoundScore((prevRoundScore) => [
+              prevRoundScore[0] + 1,
+              prevRoundScore[1],
+            ]);
+            setCurrentScore((prevScore) => prevScore + 1);
+            const shuffled = randomiseOrder(pokemons);
+            setRandomisedPokemon(shuffled);
+            return {
+              ...pokemon,
+              clicked: true,
+            };
+          }
+        }
+        return pokemon;
       });
     });
   };
 
-  const handleShowPokemonsCLick = () => {
-    console.log(pokemons);
-  };
+  //check is round is over
+  useEffect(() => {
+    if (currentRoundScore[0] === currentRoundScore[1]) {
+      handleNextRoundClick();
+    }
+  }, [currentRoundScore]);
 
-  // On the first render, fetch 6 pokemons
+  // On the first render, fetch 5 pokemons
   useEffect(() => {
     if (round === 0) {
       const initialIds = getRandomPokemonIds([], 5);
@@ -76,7 +94,6 @@ export default function App() {
     }
   }, []);
 
-  // Randomize the order of pokemons when the state changes
   useEffect(() => {
     if (pokemons.length > 0) {
       const shuffled = randomiseOrder(pokemons);
@@ -88,12 +105,12 @@ export default function App() {
     <>
       <div className="scores">
         <div className="current-score">SCORE:{currentScore}</div>
-        <div className="high-score">HIGH SCORE:{currentScore}</div>
+        <div className="high-score">HIGH SCORE:{highScore}</div>
         <img src="./src/assets/images/trophy.png" alt="Image" id="trophy" />
       </div>
 
       <div className="current-round">
-        {currentRound[0]} / {currentRound[1]}
+        {currentRoundScore[0]} / {currentRoundScore[1]}
       </div>
 
       <div className="card-section">
@@ -103,6 +120,7 @@ export default function App() {
               className="card-image"
               src={pokemon.imageUrl}
               alt={pokemon.name}
+              onClick={() => handlePokemonClick(pokemon.id)}
             />
             <p className="card-name">{pokemon.name}</p>
           </div>
