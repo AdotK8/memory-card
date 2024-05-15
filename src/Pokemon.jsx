@@ -9,6 +9,7 @@ export default function App() {
   const [randomisedPokemon, setRandomisedPokemon] = useState([]);
   const [currentScore, setCurrentScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
+  const [currentRound, setCurrentRound] = useState([0, 5]);
   const displayPokemon =
     randomisedPokemon.length > 0 ? randomisedPokemon : pokemons;
 
@@ -19,6 +20,7 @@ export default function App() {
         const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
         const response = await fetch(url);
         const data = await response.json();
+        console.log(data);
 
         newPokemons.push({
           id: uuidv4(), // Unique ID for internal use
@@ -67,7 +69,7 @@ export default function App() {
   // On the first render, fetch 6 pokemons
   useEffect(() => {
     if (round === 0) {
-      const initialIds = getRandomPokemonIds([], 6);
+      const initialIds = getRandomPokemonIds([], 5);
       fetchPokemons(initialIds).then((initialPokemons) => {
         setPokemons(initialPokemons);
       });
@@ -85,23 +87,27 @@ export default function App() {
   return (
     <>
       <div className="scores">
-        <div className="curent-score">SCORE:{currentScore}</div>
-        <div className="curent-score">HIGH SCORE:{currentScore}</div>
+        <div className="current-score">SCORE:{currentScore}</div>
+        <div className="high-score">HIGH SCORE:{currentScore}</div>
         <img src="./src/assets/images/trophy.png" alt="Image" id="trophy" />
       </div>
-      {/* <div className="card-section">
-        <button onClick={handleShowPokemonsCLick}>Show Pokemons</button>
-        <button onClick={handleAddClick}>Add Pokémon</button>
+
+      <div className="current-round">
+        {currentRound[0]} / {currentRound[1]}
+      </div>
+
+      <div className="card-section">
         {displayPokemon.map((pokemon) => (
-          <div key={pokemon.id}>
-            <button onClick={() => handlePokemonClick(pokemon.id)}>
-              click {pokemon.name}
-            </button>
-            <img src={pokemon.imageUrl} alt={pokemon.name} />
-            <p>{pokemon.name}</p>
+          <div className="card" key={pokemon.id}>
+            <img
+              className="card-image"
+              src={pokemon.imageUrl}
+              alt={pokemon.name}
+            />
+            <p className="card-name">{pokemon.name}</p>
           </div>
         ))}
-      </div> */}
+      </div>
     </>
   );
 }

@@ -40,6 +40,11 @@ body,
   .title {
     @extend .vt323-regular;
     font-size: 3.5rem;
+    text-shadow:
+      -1px -1px 0 black,
+      1px -1px 0 black,
+      -1px 1px 0 black,
+      1px 1px 0 black;
     span:first-child {
       color: red;
     }
@@ -112,6 +117,12 @@ body,
     }
     .start-button:hover {
       background-color: white;
+      color: white;
+      text-shadow:
+        -1px -1px 0 black,
+        1px -1px 0 black,
+        -1px 1px 0 black,
+        1px 1px 0 black;
     }
   }
 }
@@ -124,10 +135,80 @@ body,
   gap: 1.5rem;
   align-items: center;
   justify-content: center;
+  color: white;
+
+  .current-score,
+  .high-score {
+    text-shadow:
+      -1px -1px 0 black,
+      1px -1px 0 black,
+      -1px 1px 0 black,
+      1px 1px 0 black;
+  }
 
   #trophy {
     height: 30px;
     width: auto;
     margin-left: -15px;
+  }
+}
+
+.current-round {
+  @extend .vt323-regular;
+  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  padding: 1rem;
+  text-shadow:
+    -1px -1px 0 black,
+    1px -1px 0 black,
+    -1px 1px 0 black,
+    1px 1px 0 black;
+}
+
+//css for cards
+
+.card-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding-top: 3rem;
+
+  .card {
+    background-color: #ffffff94;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.2s;
+    width: 150px;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    .card-image {
+      display: block;
+      height: 100px;
+      width: 100px;
+      margin: 0 auto;
+      object-fit: contain;
+      padding: 10px;
+    }
+
+    .card-name {
+      @extend .vt323-regular;
+      background-color: #f8f8f8;
+      border-top: 1px solid #ddd;
+      margin: 0;
+      padding: 10px 0;
+      font-size: 1.5rem;
+      text-transform: capitalize;
+    }
   }
 }
