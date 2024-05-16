@@ -1,42 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
 import "./styles/App.scss";
 import { randomiseOrder, getRandomPokemonIds } from "./Helpers";
+import { fetchPokemons } from "./Helpers";
 
-export default function App() {
+export default function App({ gameStatus, setGameStatus }) {
+  //inititializing state variables
   const [pokemons, setPokemons] = useState([]);
   const [round, setRound] = useState(0);
   const [randomisedPokemon, setRandomisedPokemon] = useState([]);
   const [currentScore, setCurrentScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [currentRoundScore, setCurrentRoundScore] = useState([0, 5]);
-  const displayPokemon =
+
+  let displayPokemon =
     randomisedPokemon.length > 0 ? randomisedPokemon : pokemons;
 
-  const fetchPokemons = async (pokemonIds) => {
-    const newPokemons = [];
-    for (const id of pokemonIds) {
-      try {
-        const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
-        const response = await fetch(url);
-        const data = await response.json();
-
-        newPokemons.push({
-          id: uuidv4(), // Unique ID for internal use
-          name: data.name,
-          imageUrl: data.sprites.other.dream_world.front_default,
-          number: id,
-          clicked: false,
-        });
-      } catch (error) {
-        console.error("Error fetching Pokémon:", error);
-      }
-    }
-    return newPokemons;
-  };
-
+  //function to start new round
   const handleNextRoundClick = async () => {
-    //function to start new round
     console.log("new round should start");
     //get new pokemons for next round
     const newPokemonIds = getRandomPokemonIds([], currentRoundScore[1] + 2);
@@ -51,12 +31,14 @@ export default function App() {
     setCurrentRoundScore([0, currentRoundScore[0] + 2]);
   };
 
+  //function to handle pokemon click
   const handlePokemonClick = (id) => {
     setPokemons((prevPokemons) => {
       return prevPokemons.map((pokemon) => {
         if (pokemon.id === id) {
           if (pokemon.clicked) {
             console.error(`${pokemon.name} has already been clicked!`);
+            setGameStatus(false);
           } else {
             // Set clicked to true for the clicked Pokémon and update score states
             setCurrentRoundScore((prevRoundScore) => [
@@ -94,6 +76,7 @@ export default function App() {
     }
   }, []);
 
+  //when round changes, shuffle pokemon order
   useEffect(() => {
     if (pokemons.length > 0) {
       const shuffled = randomiseOrder(pokemons);
@@ -113,19 +96,23 @@ export default function App() {
         {currentRoundScore[0]} / {currentRoundScore[1]}
       </div>
 
-      <div className="card-section">
-        {displayPokemon.map((pokemon) => (
-          <div className="card" key={pokemon.id}>
-            <img
-              className="card-image"
-              src={pokemon.imageUrl}
-              alt={pokemon.name}
-              onClick={() => handlePokemonClick(pokemon.id)}
-            />
-            <p className="card-name">{pokemon.name}</p>
-          </div>
-        ))}
-      </div>
+      {gameStatus ? (
+        <div className="card-section">
+          {displayPokemon.map((pokemon) => (
+            <div className="card" key={pokemon.id}>
+              <img
+                className="card-image"
+                src={pokemon.imageUrl}
+                alt={pokemon.name}
+                onClick={() => handlePokemonClick(pokemon.id)}
+              />
+              <p className="card-name">{pokemon.name}</p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div> Game Over</div>
+      )}
     </>
   );
 }

@@ -3,7 +3,9 @@ import App from "./Pokemon";
 import "./styles/App.scss";
 
 export default function Start() {
+  //initializing state variables
   const [modal, setModal] = useState(true);
+  const [gameStatus, setGameStatus] = useState(true);
 
   function handleClick() {
     setModal(false);
@@ -27,7 +29,7 @@ export default function Start() {
           </div>
         </div>
       ) : (
-        <App />
+        <App gameStatus={gameStatus} setGameStatus={setGameStatus} />
       )}
     </>
   );
