@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./styles/App.scss";
 import { randomiseOrder, getRandomPokemonIds } from "./Helpers";
 import { fetchPokemons } from "./Helpers";
+import gameOverGif from "./assets/images/ditto-sad.gif";
 
 export default function App({ gameStatus, setGameStatus }) {
   //inititializing state variables
@@ -40,7 +41,6 @@ export default function App({ gameStatus, setGameStatus }) {
             console.error(`${pokemon.name} has already been clicked!`);
             setGameStatus(false);
           } else {
-            // Set clicked to true for the clicked Pokémon and update score states
             setCurrentRoundScore((prevRoundScore) => [
               prevRoundScore[0] + 1,
               prevRoundScore[1],
@@ -59,6 +59,17 @@ export default function App({ gameStatus, setGameStatus }) {
     });
   };
 
+  //start new game
+  const handleGameEnd = () => {
+    setCurrentScore(0);
+    setCurrentRoundScore([0, 5]);
+    setRound(0);
+    setPokemons([]);
+    setRandomisedPokemon([]);
+    // Inform the parent component about the game over
+    setGameStatus(true);
+  };
+
   //check is round is over
   useEffect(() => {
     if (currentRoundScore[0] === currentRoundScore[1]) {
@@ -66,7 +77,7 @@ export default function App({ gameStatus, setGameStatus }) {
     }
   }, [currentRoundScore]);
 
-  // On the first render, fetch 5 pokemons
+  // On the new game, fetch 5 pokemons
   useEffect(() => {
     if (round === 0) {
       const initialIds = getRandomPokemonIds([], 5);
@@ -74,7 +85,7 @@ export default function App({ gameStatus, setGameStatus }) {
         setPokemons(initialPokemons);
       });
     }
-  }, []);
+  }, [gameStatus]);
 
   //when round changes, shuffle pokemon order
   useEffect(() => {
@@ -111,7 +122,18 @@ export default function App({ gameStatus, setGameStatus }) {
           ))}
         </div>
       ) : (
-        <div> Game Over</div>
+        <div className="game-over-screen">
+          <div className="game-over-container">
+            <div className="game-over">
+              <h1>Game Over!</h1>
+              <img src={gameOverGif} alt="Game Over Gif" />
+              <p>Your final score is {currentScore}</p>
+              <button className="start-button" onClick={handleGameEnd}>
+                Play Again
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );
