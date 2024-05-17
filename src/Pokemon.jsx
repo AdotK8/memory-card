@@ -25,10 +25,8 @@ export default function App({ gameStatus, setGameStatus }) {
     const newPokemons = await fetchPokemons(newPokemonIds);
     setPokemons(newPokemons);
 
-    //set round to trigger render
+    //update states and trigger render
     setRound((prevRound) => prevRound + 1);
-
-    //set currentScore
     setCurrentRoundScore([0, currentRoundScore[0] + 2]);
   };
 
@@ -38,7 +36,6 @@ export default function App({ gameStatus, setGameStatus }) {
       return prevPokemons.map((pokemon) => {
         if (pokemon.id === id) {
           if (pokemon.clicked) {
-            console.error(`${pokemon.name} has already been clicked!`);
             setGameStatus(false);
           } else {
             setCurrentRoundScore((prevRoundScore) => [

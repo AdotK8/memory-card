@@ -54,6 +54,22 @@ body,
   }
 }
 
+.music-icon {
+  position: fixed;
+  position: fixed;
+  top: 35px; /* Adjust this value as needed */
+  left: 20px; /* Adjust this value as needed */
+  z-index: 1000; /* Ensures the icon is on top of other elements */
+  background-color: white;
+  padding: 5px;
+  border-radius: 50%;
+
+  &:hover {
+    transform: translateY(-5px);
+    cursor: pointer;
+  }
+}
+
 .start-screen,
 .game-over-screen {
   position: fixed;
