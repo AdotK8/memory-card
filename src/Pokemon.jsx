@@ -77,6 +77,14 @@ export default function App({ gameStatus, setGameStatus }) {
     }
   }, [currentRoundScore]);
 
+  //load high score from local storage on intial render
+  useEffect(() => {
+    const storedHighScore = localStorage.getItem("highScore");
+    if (storedHighScore) {
+      setHighScore(parseInt(storedHighScore, 10));
+    }
+  }, []);
+
   // On the new game, fetch 5 pokemons
   useEffect(() => {
     if (round === 0) {
@@ -95,6 +103,14 @@ export default function App({ gameStatus, setGameStatus }) {
     }
   }, [round]);
 
+  //when current score changes, check if it is high score. And save to local store
+  useEffect(() => {
+    if (currentScore > highScore) {
+      setHighScore(currentScore);
+      localStorage.setItem("highScore", currentScore.toString());
+    }
+  }, [currentScore, highScore]);
+
   return (
     <>
       <div className="scores">
@@ -110,12 +126,15 @@ export default function App({ gameStatus, setGameStatus }) {
       {gameStatus ? (
         <div className="card-section">
           {displayPokemon.map((pokemon) => (
-            <div className="card" key={pokemon.id}>
+            <div
+              className="card"
+              key={pokemon.id}
+              onClick={() => handlePokemonClick(pokemon.id)}
+            >
               <img
                 className="card-image"
                 src={pokemon.imageUrl}
                 alt={pokemon.name}
-                onClick={() => handlePokemonClick(pokemon.id)}
               />
               <p className="card-name">{pokemon.name}</p>
             </div>
