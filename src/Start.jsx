@@ -9,15 +9,12 @@ export default function Start() {
   //initializing state variables
   const [modal, setModal] = useState(true);
   const [gameStatus, setGameStatus] = useState(true);
-  const [musicToggleIcon, setMusicToggleIcon] = useState(true);
+  const [musicToggleIcon, setMusicToggleIcon] = useState(false);
 
   const audioRef = useRef(null);
 
   function handleClick() {
     setModal(false);
-    if (audioRef.current) {
-      audioRef.current.play();
-    }
   }
 
   function handleMusicToggle() {
