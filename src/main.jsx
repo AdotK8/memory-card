@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import Start from "./Start";
 import "./styles/App.scss";
+import Loading from "./Loading";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <section className="main">

@@ -3,6 +3,7 @@ import "./styles/App.scss";
 import { randomiseOrder, getRandomPokemonIds } from "./Helpers";
 import { fetchPokemons } from "./Helpers";
 import gameOverGif from "./assets/images/ditto-sad.gif";
+import Loading from "./Loading";
 
 export default function App({ gameStatus, setGameStatus }) {
   //inititializing state variables
@@ -12,19 +13,17 @@ export default function App({ gameStatus, setGameStatus }) {
   const [currentScore, setCurrentScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [currentRoundScore, setCurrentRoundScore] = useState([0, 5]);
+  const [loading, setLoading] = useState(true);
 
   let displayPokemon =
     randomisedPokemon.length > 0 ? randomisedPokemon : pokemons;
 
   //function to start new round
   const handleNextRoundClick = async () => {
-    console.log("new round should start");
-    //get new pokemons for next round
     const newPokemonIds = getRandomPokemonIds([], currentRoundScore[1] + 2);
     console.log(newPokemonIds);
     const newPokemons = await fetchPokemons(newPokemonIds);
     setPokemons(newPokemons);
-
     //update states and trigger render
     setRound((prevRound) => prevRound + 1);
     setCurrentRoundScore([0, currentRoundScore[0] + 2]);
@@ -85,9 +84,11 @@ export default function App({ gameStatus, setGameStatus }) {
   // On the new game, fetch 5 pokemons
   useEffect(() => {
     if (round === 0) {
+      setLoading(true);
       const initialIds = getRandomPokemonIds([], 5);
       fetchPokemons(initialIds).then((initialPokemons) => {
         setPokemons(initialPokemons);
+        setLoading(false);
       });
     }
   }, [gameStatus]);
@@ -111,8 +112,8 @@ export default function App({ gameStatus, setGameStatus }) {
   return (
     <>
       <div className="scores">
-        <div className="current-score">SCORE:{currentScore}</div>
-        <div className="high-score">HIGH SCORE:{highScore}</div>
+        <div className="current-score">SCORE: {currentScore}</div>
+        <div className="high-score">HIGH SCORE: {highScore}</div>
         <img src="./src/assets/images/trophy.png" alt="Image" id="trophy" />
       </div>
 
@@ -120,7 +121,9 @@ export default function App({ gameStatus, setGameStatus }) {
         {currentRoundScore[0]} / {currentRoundScore[1]}
       </div>
 
-      {gameStatus ? (
+      {loading ? (
+        <Loading />
+      ) : gameStatus ? (
         <div className="card-section">
           {displayPokemon.map((pokemon) => (
             <div

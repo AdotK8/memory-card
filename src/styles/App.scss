@@ -266,3 +266,26 @@ body,
     -1px 1px 0 black,
     1px 1px 0 black;
 }
+
+//loading screen CSS
+.loading-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin-top: -200px;
+}
+
+.spinning-pokeball {
+  width: 100px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
