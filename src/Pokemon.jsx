@@ -7,7 +7,7 @@ import Loading from "./Loading";
 import trophyIcon from "./assets/images/trophy.png";
 
 export default function App({ gameStatus, setGameStatus }) {
-  //inititializing state variables
+  // Initializing state variables
   const [pokemons, setPokemons] = useState([]);
   const [round, setRound] = useState(0);
   const [randomisedPokemon, setRandomisedPokemon] = useState([]);
@@ -19,18 +19,19 @@ export default function App({ gameStatus, setGameStatus }) {
   let displayPokemon =
     randomisedPokemon.length > 0 ? randomisedPokemon : pokemons;
 
-  //function to start new round
+  // Function to start new round
   const handleNextRoundClick = async () => {
+    setLoading(true); // Set loading to true
     const newPokemonIds = getRandomPokemonIds([], currentRoundScore[1] + 2);
-    console.log(newPokemonIds);
     const newPokemons = await fetchPokemons(newPokemonIds);
     setPokemons(newPokemons);
-    //update states and trigger render
+    // Update states and trigger render
     setRound((prevRound) => prevRound + 1);
     setCurrentRoundScore([0, currentRoundScore[0] + 2]);
+    setLoading(false); // Set loading to false
   };
 
-  //function to handle pokemon click
+  // Function to handle pokemon click
   const handlePokemonClick = (id) => {
     setPokemons((prevPokemons) => {
       return prevPokemons.map((pokemon) => {
@@ -56,7 +57,7 @@ export default function App({ gameStatus, setGameStatus }) {
     });
   };
 
-  //start new game
+  // Start new game
   const handleGameEnd = () => {
     setCurrentScore(0);
     setCurrentRoundScore([0, 5]);
@@ -67,14 +68,14 @@ export default function App({ gameStatus, setGameStatus }) {
     setGameStatus(true);
   };
 
-  //check is round is over
+  // Check if round is over
   useEffect(() => {
     if (currentRoundScore[0] === currentRoundScore[1]) {
       handleNextRoundClick();
     }
   }, [currentRoundScore]);
 
-  //load high score from local storage on intial render
+  // Load high score from local storage on initial render
   useEffect(() => {
     const storedHighScore = localStorage.getItem("highScore");
     if (storedHighScore) {
@@ -84,7 +85,7 @@ export default function App({ gameStatus, setGameStatus }) {
 
   // On the new game, fetch 5 pokemons
   useEffect(() => {
-    if (round === 0) {
+    if (round === 0 && gameStatus) {
       setLoading(true);
       const initialIds = getRandomPokemonIds([], 5);
       fetchPokemons(initialIds).then((initialPokemons) => {
@@ -94,7 +95,7 @@ export default function App({ gameStatus, setGameStatus }) {
     }
   }, [gameStatus]);
 
-  //when round changes, shuffle pokemon order
+  // When round changes, shuffle pokemon order
   useEffect(() => {
     if (pokemons.length > 0) {
       const shuffled = randomiseOrder(pokemons);
@@ -102,7 +103,7 @@ export default function App({ gameStatus, setGameStatus }) {
     }
   }, [round]);
 
-  //when current score changes, check if it is high score. And save to local store
+  // When current score changes, check if it is high score and save to local storage
   useEffect(() => {
     if (currentScore > highScore) {
       setHighScore(currentScore);
