@@ -4,6 +4,7 @@ import { randomiseOrder, getRandomPokemonIds } from "./Helpers";
 import { fetchPokemons } from "./Helpers";
 import gameOverGif from "./assets/images/ditto-sad.gif";
 import Loading from "./Loading";
+import trophyIcon from "./assets/images/trophy.png";
 
 export default function App({ gameStatus, setGameStatus }) {
   //inititializing state variables
@@ -114,7 +115,7 @@ export default function App({ gameStatus, setGameStatus }) {
       <div className="scores">
         <div className="current-score">SCORE: {currentScore}</div>
         <div className="high-score">HIGH SCORE: {highScore}</div>
-        <img src="./src/assets/images/trophy.png" alt="Image" id="trophy" />
+        <img src={trophyIcon} alt="Image" id="trophy" />
       </div>
 
       <div className="current-round">
