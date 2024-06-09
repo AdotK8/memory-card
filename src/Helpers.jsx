@@ -1,9 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 
-//helper functions for App.jsx
-
-//function which takes in existing Ids and a count of how many pokemon to add
 export function getRandomPokemonIds(existingIds = [], count) {
+  /* takes in array of existing pokemon ID's and count, 
+returns new array of random pokemon*/
   const uniqueNumbers = new Set(existingIds);
   while (uniqueNumbers.size < count + existingIds.length) {
     const randomNum = Math.floor(Math.random() * 151) + 1;
@@ -15,9 +14,9 @@ export function getRandomPokemonIds(existingIds = [], count) {
   return newUniqueNumbers;
 }
 
-//function which takes in array of pokemon and returns a shuffled version
-//Using Fisher-Yates shuffle
 export function randomiseOrder(arr) {
+  /*  which takes in array of pokemon and returns a shuffled version
+using Fisher-Yates shuffle */
   const shuffledArray = [...arr];
   let i = shuffledArray.length - 1;
   let j, temp;
@@ -33,8 +32,9 @@ export function randomiseOrder(arr) {
   return shuffledArray;
 }
 
-//funciton to fetch pokemon from external API and return array of new pokemon
 export async function fetchPokemons(pokemonIds) {
+  /* takes in pokemon ID array and fetches corresponding pokemon via pokeAPI, returns
+  array of pokemon  */
   const newPokemons = [];
   for (const id of pokemonIds) {
     try {

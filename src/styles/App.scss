@@ -1,8 +1,3 @@
-* {
-  // outline: solid black;
-}
-
-//defining font to use throughout
 .vt323-regular {
   font-family: "VT323", monospace;
   font-weight: 400;
@@ -57,9 +52,9 @@ body,
 .music-icon {
   position: fixed;
   position: fixed;
-  top: 35px; /* Adjust this value as needed */
-  left: 20px; /* Adjust this value as needed */
-  z-index: 1000; /* Ensures the icon is on top of other elements */
+  top: 35px;
+  left: 20px;
+  z-index: 1000;
   background-color: white;
   padding: 5px;
   border-radius: 50%;

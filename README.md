@@ -1,0 +1,16 @@
+# PokeMemo
+
+## Summary
+
+> [Live Preview](https://memory-card-3716161eff09.herokuapp.com/)
+
+A retro pokemon themed memory game, it features all original 151 original pokemon via PokeAPI. You can test your memory by only clicking on new pokemon. First round has 5 pokemon and you gain points each correct guess. Each round increases the deck size by 2.
+
+### Installing and running
+
+```bash
+git clone https://github.com/Sharkri/memory-card.git
+cd memory-card
+npm install
+npm start
+```
